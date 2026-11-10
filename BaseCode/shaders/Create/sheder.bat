@@ -1,1 +1,1 @@
-slangc triangle.slang -target spirv -entry vertMain -entry fragMain -o slang.spv
+slangc triangle.slang -target spirv -profile lib_6_3 -fvk-use-entrypoint-name -o slang.spv 2> compile_errors.txt
