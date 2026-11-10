@@ -728,12 +728,14 @@ private:
 
 	void createDescriptorPool()
 	{
-		std::array<vk::DescriptorPoolSize, 2> poolSize{ {{.type = vk::DescriptorType::eUniformBuffer, .descriptorCount = MAX_FRAMES_IN_FLIGHT},
-														{.type = vk::DescriptorType::eCombinedImageSampler, .descriptorCount = MAX_FRAMES_IN_FLIGHT}} };
-		vk::DescriptorPoolCreateInfo          poolInfo{ .flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet,
-													   .maxSets = MAX_FRAMES_IN_FLIGHT,
-													   .poolSizeCount = static_cast<uint32_t>(poolSize.size()),
-													   .pPoolSizes = poolSize.data() };
+		std::array poolSize{
+			vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer, MAX_FRAMES_IN_FLIGHT),
+			vk::DescriptorPoolSize(vk::DescriptorType::eStorageBuffer, MAX_FRAMES_IN_FLIGHT * 2) };
+		vk::DescriptorPoolCreateInfo poolInfo{};
+		poolInfo.flags = vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet;
+		poolInfo.maxSets = MAX_FRAMES_IN_FLIGHT;
+		poolInfo.poolSizeCount = poolSize.size();
+		poolInfo.pPoolSizes = poolSize.data();
 		descriptorPool = vk::raii::DescriptorPool(device, poolInfo);
 	}
 
